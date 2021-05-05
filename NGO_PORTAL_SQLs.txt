@@ -1,0 +1,115 @@
+Queries written with Syntax for MySQL.
+
+/*
+End User Table
+---------------
+*/	
+create table end_user_details(
+userEmail VARCHAR(255) PRIMARY KEY NOT NULL,
+userPassword VARCHAR(128) NOT NULL,
+userFirstName VARCHAR(50) NOT NULL,
+userMidName VARCHAR(50),
+userLastName VARCHAR(50) NOT NULL,
+userContact BIGINT NOT NULL,
+userDOB Date NOT NULL
+);
+
+/*
+Ngo User Table
+---------------
+*/
+create table ngo_user_details(
+ngoEmail varchar(255) PRIMARY KEY NOT NULL,
+ngoPassword varchar(128) NOT NULL,
+ngoName varchar(70) NOT NULL,
+ngoURL varchar(255),
+ngoRegID varchar(50) NOT NULL,
+ngoAddressLine1 TEXT NOT NULL,
+ngoAddressLine2 TEXT NOT NULL,
+ngoZipCode INT NOT NULL,
+ngoCity VARCHAR(20) NOT NULL,
+ngoState VARCHAR(20) NOT NULL,
+ngoContact BIGINT NOT NULL
+);
+
+/*
+Ngo Event Details Table
+------------------------	
+*/
+create table ngo_event_details(
+eventID INT PRIMARY KEY AUTO_INCREMENT,
+eventName VARCHAR(50) NOT NULL,
+eventDescription MEDIUMTEXT NOT NULL,
+eventDate Date NOT NULL,
+eventLocCity VARCHAR(20) NOT NULL,
+eventLocState VARCHAR(20) NOT NULL,
+ngoEmail VARCHAR(255) NOT NULL,
+FOREIGN KEY(ngoEmail) REFERENCES ngo_user_details(ngoEmail)		
+);
+
+/*
+Ngo Job Details Table
+----------------------
+				
+*/
+create table ngo_job_details(
+jobID INT PRIMARY KEY AUTO_INCREMENT,
+jobTitle VARCHAR(50) NOT NULL,
+jobPosition VARCHAR(30) NOT NULL,
+jobPrimarySkill VARCHAR(30) NOT NULL,
+jobLocation VARCHAR(20) NOT NULL,
+jobCTC	    TEXT	NOT NULL,				Updated
+ngoEmail VARCHAR(255)   NOT NULL,
+FOREIGN KEY(ngoEmail) REFERENCES ngo_user_details(ngoEmail)		
+);
+
+/*
+Ngo Fundraiser Details Table
+-----------------------------	
+				
+*/
+create table ngo_fundraiser_details(
+frID INT PRIMARY KEY AUTO_INCREMENT,
+frTitle VARCHAR(50) NOT NULL,
+frDescription MEDIUMTEXT NOT NULL,
+ngoEmail VARCHAR(255) NOT NULL,
+FOREIGN KEY(ngoEmail) REFERENCES ngo_user_details(ngoEmail)		
+);
+
+/*
+Responses Event Table
+----------------------
+				
+*/
+create table responses_events(
+eventID INT NOT NULL,
+userEmail varchar(255) NOT NULL,
+FOREIGN KEY (eventID) 	REFERENCES ngo_event_details(eventID),
+FOREIGN KEY (userEmail) REFERENCES end_user_details(userEmail)
+);
+
+/*
+Responses Job Table
+--------------------
+				
+*/
+create table responses_jobs(
+jobID INT NOT NULL,
+userEmail varchar(255) NOT NULL,
+FOREIGN KEY (jobID) 	REFERENCES ngo_job_details(jobID),
+FOREIGN KEY (userEmail) REFERENCES end_user_details(userEmail)
+);
+
+/*
+Responses Fundraiser Table
+---------------------------	
+				
+*/
+create table responses_fundraisers(
+frID INT NOT NULL,
+userEmail varchar(255) NOT NULL,
+FOREIGN KEY (frID) 	REFERENCES ngo_fundraiser_details(frID),
+FOREIGN KEY (userEmail) REFERENCES end_user_details(userEmail)
+);
+
+
